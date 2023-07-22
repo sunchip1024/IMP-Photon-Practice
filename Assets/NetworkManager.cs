@@ -29,13 +29,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         StatusText.text = PhotonNetwork.NetworkClientState.ToString();
     }
 
-    public void GeneratePlayer()
+    public void GeneratePlayer(string name)
     {
         PlayerManager newPlayer;
-        
+
         // newPlayer = GameObject.Instantiate( network player avatar or model, spawn position, spawn rotation)
         newPlayer = PhotonNetwork.Instantiate("Cube",
                 new Vector3(0, 5, 0), Quaternion.identity).GetComponent<PlayerManager>();
+        newPlayer.SetName(name);
         LocalPlayer = newPlayer;
     }
 
@@ -43,7 +44,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("서버 접속 완료");
-        PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
+        //PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
         UIManager.GetComponent<UIManager>().ShowControlPanel();
     }
 
@@ -77,8 +78,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.LogFormat("방 참가 완료 : {0}", PhotonNetwork.CurrentRoom);
         RoomText.text = PhotonNetwork.CurrentRoom.Name;
         UIManager.GetComponent<UIManager>().StartGame();
-        GeneratePlayer();
-        
+
+        GeneratePlayer(NickNameInput.text);
+
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -103,16 +105,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [ContextMenu("정보")]
     void Info()
     {
-        if(PhotonNetwork.InRoom)
+        if (PhotonNetwork.InRoom)
         {
             print("현재 방 이름 : " + PhotonNetwork.CurrentRoom.Name);
             print("현재 방 인원수 : " + PhotonNetwork.CurrentRoom.PlayerCount);
             print("현재 방 최대인원수 : " + PhotonNetwork.CurrentRoom.MaxPlayers);
 
             string playerStr = "방에 있는 플레이어 목록 : ";
-            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
-                playerStr += PhotonNetwork.PlayerList[i].NickName + ", ";      
+                playerStr += PhotonNetwork.PlayerList[i].NickName + ", ";
             }
             print(playerStr);
         }

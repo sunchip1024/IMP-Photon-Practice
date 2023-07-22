@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -14,8 +15,7 @@ public class PlayerManager : MonoBehaviour
 {
 	public PhotonView PV;
 	public string id;
-
-	public string name;
+	public Text PlayerName;
 
 	public bool isOnline;
 
@@ -36,9 +36,9 @@ public class PlayerManager : MonoBehaviour
     }
 
     // Use this for initialization
-    public void Set3DName(string name)
+    public void SetName(string name)
 	{
-		GetComponentInChildren<TextMesh>().text = name;
+		PlayerName.text = name;
 
 	}
 
