@@ -15,6 +15,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject ControlPanel;
 
+    [Tooltip("간소화된 패널")]
+    [SerializeField]
+    private GameObject SimplePanel;
+
     [Tooltip("전체 캔버스")]
     [SerializeField]
     private GameObject Canvas;
@@ -30,6 +34,15 @@ public class UIManager : MonoBehaviour
     public void ShowControlPanel()
     {
         ControlPanel.SetActive(true);
+    }
+
+    public void ShowSimplePanel()
+    {
+        SimplePanel.SetActive(true);
+    }
+    public void HideSimplePanel()
+    {
+        SimplePanel.SetActive(false);
     }
     public void StartGame()
     {

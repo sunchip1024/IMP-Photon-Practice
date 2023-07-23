@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        NetworkManager.instance.Connect();
+        //NetworkManager.instance.Connect();
     }
 
     // Update is called once per frame

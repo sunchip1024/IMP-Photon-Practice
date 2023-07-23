@@ -16,17 +16,37 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public PhotonView Photonview;
 
     private PlayerManager LocalPlayer;
+    public string RoomToMove;
 
     void Awake()
     {
         instance = this;
         Screen.SetResolution(960, 540, false);
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     // Update is called once per frame
     void Update()
     {
         StatusText.text = PhotonNetwork.NetworkClientState.ToString();
+        if(PhotonNetwork.InLobby && RoomToMove != string.Empty)
+        {
+            JoinOrCreateRoom(RoomToMove);
+            RoomToMove = null;
+        }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("서버 접속 완료");
+        UIManager.GetComponent<UIManager>().ShowSimplePanel();
+        PhotonNetwork.JoinLobby();
+
+    }
+
+    public void Join()
+    {
+        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 6 }, null);
     }
 
     public void GeneratePlayer(string name)
@@ -38,15 +58,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 new Vector3(0, 5, 0), Quaternion.identity).GetComponent<PlayerManager>();
         newPlayer.SetName(name);
         LocalPlayer = newPlayer;
+        InteractManager.instance.player = newPlayer;
     }
 
-    public void Connect() => PhotonNetwork.ConnectUsingSettings();
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("서버 접속 완료");
-        //PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
-        UIManager.GetComponent<UIManager>().ShowControlPanel();
-    }
+    //public void Connect() => PhotonNetwork.ConnectUsingSettings();
+    //public override void OnConnectedToMaster()
+    //{
+    //    Debug.Log("서버 접속 완료");
+    //    //PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
+    //    UIManager.GetComponent<UIManager>().ShowControlPanel();
+    //}
 
 
     public void DisConnect() => PhotonNetwork.Disconnect();
@@ -59,26 +80,31 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void JoinLobby() => PhotonNetwork.JoinLobby();
     public override void OnJoinedLobby()
     {
-        Debug.Log("로비접속완료");
+        Debug.Log("로비 접속 완료");
     }
 
     //방 만들기 및 참가
     public void CreateRoom() => PhotonNetwork.CreateRoom(RoomInput.text, new RoomOptions { MaxPlayers = 5 });
-    public void JoinRoom() => PhotonNetwork.JoinRoom(RoomInput.text);
-    public void JoinOrCreateRoom() => PhotonNetwork.JoinOrCreateRoom(RoomInput.text, new RoomOptions { MaxPlayers = 2 }, null);
+    public void JoinRoom(string RoomName) => PhotonNetwork.JoinRoom(RoomName);
+    public void JoinOrCreateRoom(string RoomName) => PhotonNetwork.JoinOrCreateRoom(RoomName, new RoomOptions { MaxPlayers = 5 }, null);
     public void JoinRandomRoom() => PhotonNetwork.JoinRandomRoom();
-    public void LeaveRoom()
+    public void LeaveRoom() => PhotonNetwork.LeaveRoom();
+
+    public override void OnLeftRoom()
     {
-        PhotonNetwork.LeaveRoom();
+        base.OnLeftRoom();
         RoomText.text = "Not in the room";
+        Debug.Log(PhotonNetwork.NetworkClientState.ToString());
+        //PhotonNetwork.JoinOrCreateRoom("Team1", new RoomOptions { MaxPlayers = 5 }, null);
     }
+
+
     public override void OnCreatedRoom() => print("방 만들기 완료");
     public override void OnJoinedRoom()
     {
         Debug.LogFormat("방 참가 완료 : {0}", PhotonNetwork.CurrentRoom);
         RoomText.text = PhotonNetwork.CurrentRoom.Name;
-        UIManager.GetComponent<UIManager>().StartGame();
-
+        UIManager.GetComponent<UIManager>().HideSimplePanel();
         GeneratePlayer(NickNameInput.text);
 
     }
@@ -94,6 +120,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         print("방 랜덤참가 실패");
     }
+
 
     public void SendChatting(string text)
     {
@@ -127,4 +154,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             print("연결됐는지? : " + PhotonNetwork.IsConnected);
         }
     }
+
+    [ContextMenu("상태")]
+    void Status()
+    {
+        Debug.Log(PhotonNetwork.NetworkClientState);
+    }
+    
 }
