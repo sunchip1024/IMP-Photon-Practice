@@ -89,6 +89,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void JoinOrCreateRoom(string RoomName) => PhotonNetwork.JoinOrCreateRoom(RoomName, new RoomOptions { MaxPlayers = 5 }, null);
     public void JoinRandomRoom() => PhotonNetwork.JoinRandomRoom();
     public void LeaveRoom() => PhotonNetwork.LeaveRoom();
+    public void LeaveRoom(string RoomName)
+    {
+        PhotonNetwork.LeaveRoom();
+        RoomToMove = RoomName;
+    }
 
     public override void OnLeftRoom()
     {

@@ -83,7 +83,7 @@ public class InteractManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             isInteracted = !isInteracted;
-            NetworkManager.instance.LeaveRoom();
+            NetworkManager.instance.LeaveRoom("Team1");
         }
     }
 }

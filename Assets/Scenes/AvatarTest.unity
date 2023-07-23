@@ -357,6 +357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FEMALE1_rigging
       objectReference: {fileID: 0}
+    - target: {fileID: 3019245806407628833, guid: fd276d7c4e6a79841a03c22cd37d69bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: fd276d7c4e6a79841a03c22cd37d69bc, type: 3}

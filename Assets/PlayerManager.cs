@@ -35,21 +35,21 @@ public class PlayerManager : MonoBehaviour
 		isLocalPlayer = PV.IsMine;
     }
 
-    // Use this for initialization
-    public void SetName(string name)
+	public void SetName(string name)
+    {
+		PV.RPC("SetNameRPC", RpcTarget.All, name);
+    }
+
+    [PunRPC]
+    public void SetNameRPC(string name)
 	{
 		PlayerName.text = name;
-
 	}
 
 	private void Start()
 	{
 		isLocalPlayer = PV.IsMine;
 		PlayerCamera.enabled = isLocalPlayer;
-		if(!isLocalPlayer)
-        {
-			Debug.Log("이건 로컬 플레이어가 아니네요!");
-        }
 	}
 
 
