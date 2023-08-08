@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public static CameraMovement instance;
+
     public Transform objectTofollow;
     public float followSpeed = 10f;
     public float sensitivity = 400f;
@@ -25,9 +27,33 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float m_zoomMin = 16f;
     [SerializeField] float currentZoom = 0f;
 
+    //currentZoom과 maxDistance의 비율
+    [SerializeField] float ScrollSensitivty;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        //rotX = transform.localRotation.eulerAngles.x;
+        //rotY = transform.localRotation.eulerAngles.y;
+
+        //Debug.Log(realCamera.localPosition);
+        //dirNormalized = realCamera.localPosition.normalized;
+        //finalDistance = realCamera.localPosition.magnitude;
+
+        //currentZoom = 5f;
+
+        //Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void Set()
+    {
+        Debug.Log("Set!");
+
         rotX = transform.localRotation.eulerAngles.x;
         rotY = transform.localRotation.eulerAngles.y;
 
@@ -37,12 +63,12 @@ public class CameraMovement : MonoBehaviour
 
         currentZoom = 5f;
 
-        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (objectTofollow == null) return;
         if(Input.GetMouseButton(0))
         {
             rotX -= Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
@@ -60,6 +86,7 @@ public class CameraMovement : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (objectTofollow == null) return;
         transform.position = Vector3.MoveTowards(transform.position, objectTofollow.position, followSpeed * Time.deltaTime);
 
         finalDir = transform.TransformPoint(dirNormalized * maxDistance);
@@ -85,7 +112,7 @@ public class CameraMovement : MonoBehaviour
         currentZoom -= t_zoomDirection * m_zoomSpeed;
         if (currentZoom < m_zoomMax) Debug.Log("1인칭 모드");
         currentZoom = Mathf.Clamp(currentZoom, m_zoomMax, m_zoomMin);
-        maxDistance = currentZoom;
+        maxDistance = currentZoom * ScrollSensitivty;
     }
 
 }

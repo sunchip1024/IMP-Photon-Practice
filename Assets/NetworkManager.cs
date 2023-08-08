@@ -51,13 +51,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void GeneratePlayer(string name)
     {
-        PlayerManager newPlayer;
+        player newPlayer;
 
         // newPlayer = GameObject.Instantiate( network player avatar or model, spawn position, spawn rotation)
-        newPlayer = PhotonNetwork.Instantiate("Cube",
-                new Vector3(0, 15, 0), Quaternion.identity).GetComponent<PlayerManager>();
-        newPlayer.SetName(name);
-        LocalPlayer = newPlayer;
+        newPlayer = PhotonNetwork.Instantiate("PlayerPrefab",
+                new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
+
+        CameraMovement.instance.Set();
+        CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
+        
     }
 
 
