@@ -11,26 +11,14 @@ public class PlayerController : MonoBehaviour
     public PhotonView PV;
 
     // 애니메이션
-    private Animator animator;
+    public Animator animator;
 
-    public enum CameraType { FpCamera, TpCamera };
+    public Transform tpRoot;
+    public Transform tpRig;
+    public Transform fpRoot;
+    public Transform fpRig;
 
-    public Camera PlayerCamera;
-
-    public Camera tpCamera;
-    public Camera fpCamera;
-    public Camera uiCamera;
-
-    [HideInInspector] public GameObject tpCamObject;
-    [HideInInspector] public GameObject fpCamObject;
-    public GameObject uiCamObject;
-
-    [HideInInspector] public Transform tpRoot;
-    [HideInInspector] public Transform tpRig;
-    [HideInInspector] public Transform fpRoot;
-    [HideInInspector] public Transform fpRig;
-
-    [HideInInspector] public Rigidbody rigid;
+    public Rigidbody rigid;
 
     // 이동 class 분류시 이용할 script
     //[HideInInspector] public Movement3D movement3d;
@@ -61,21 +49,6 @@ public class PlayerController : MonoBehaviour
 
     private float _groundCheckRadius;
 
-    /*
-     카메라 옵션
-     */
-    [Tooltip("게임 시작 시 카메라")]
-    public CameraType initialCamera;
-
-    [Range(1f, 20f), Tooltip("카메라 상하좌우 회전 속도")]
-    public float rotationSpeed = 10f;
-
-    [Range(-90f, 0f), Tooltip("올려다보기 제한 각도")]
-    public float lookUpDegree = -60f;
-
-    [Range(0f, 75f), Tooltip("내려다보기 제한 각도")]
-    public float lookDownDegree = 75f;
-
     public string email, socketId;
     public bool isOnline, isLocalPlayer;
 
@@ -91,35 +64,23 @@ public class PlayerController : MonoBehaviour
 
     public void Set()
     {
-
+        Debug.Log("세팅!");
         isLocalPlayer = PV.IsMine;
-        PlayerCamera.enabled = isLocalPlayer;
+        //tpCamera.enabled = isLocalPlayer;
 
         GetComponentInChildren<Text>().text = name;
 
-        tpCamObject = tpCamera.gameObject;
-        tpRig = tpCamera.transform.parent;
-        tpRoot = tpRig.parent;
-
-        fpCamObject = fpCamera.gameObject;
-        fpRig = fpCamera.transform.parent;
-        fpRoot = fpRig.parent;
-
-        TryGetComponent(out rigid);
-        if (rigid != null)
-        {
-            rigid.constraints = RigidbodyConstraints.FreezeRotation;
-        }
-
-        TryGetComponent(out CapsuleCollider cCol);
-        _groundCheckRadius = cCol ? cCol.radius : 0.1f;
-        animator = GetComponent<Animator>();
+        //TryGetComponent(out rigid);
+        //if (rigid != null)
+        //{
+        //    rigid.constraints = RigidbodyConstraints.FreezeRotation;
+        //}
     }
 
-    public void Awake()
-    {
-        isLocalPlayer = PV.IsMine;
-    }
+    //public void Awake()
+    //{
+    //    isLocalPlayer = PV.IsMine;
+    //}
 
     void Start()
     {
@@ -129,11 +90,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CameraViewToggle();
         CheckIsGround();
-        SetValuesByKeyInput();
-
-        Rotate();      
+        SetValuesByKeyInput();   
     }
 
     private void SetValuesByKeyInput()
@@ -145,34 +103,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) h -= 1.0f;
         if (Input.GetKey(KeyCode.D)) h += 1.0f;
 
-        // Move, Rotate
-        SendMoveInfo(h, v);
-        if (Input.GetMouseButton(0)) // 0 represents the left mouse button
-        {
-            _rotation = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
-
-            // rotate the character using _rotation here
-        }
-        else
-        {
-            _rotation = Vector2.zero;
-        }
-        //_rotation = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
-
         isMoving = h != 0 || v != 0;
         isRunning = Input.GetKey(KeyCode.LeftShift);
-
-
 
         // Jump
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
+        _moveDir = new Vector3(h, 0f, v).normalized;
 
-        // Wheel, 카메라 줌 관련 변수
-        //_tpCameraWheelInput = Input.GetAxisRaw("Mouse ScrollWheel");
-        //_currentWheel = Mathf.Lerp(_currentWheel, _tpCameraWheelInput, CamOption.zoomAccel);
+        Move();
+
     }
 
     // 이동 관련 변수 초기화 
@@ -192,112 +134,10 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-    // 토글 정상 작동 (카메라 전환만 확인)
-    private void CameraViewToggle()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            isCurrentFp = !isCurrentFp;
-            /*
-                SetActive(true) => 활성화
-                SetActive(false) => 비활성화
-            */
-            fpCamObject.SetActive(isCurrentFp);
-            tpCamObject.SetActive(!isCurrentFp);
-
-            // TP -> FP
-            if (isCurrentFp)
-            {
-                fpRoot.localEulerAngles = Vector3.up * tpRoot.localEulerAngles.y;
-                fpRig.localEulerAngles = Vector3.right * tpRig.localEulerAngles.x;
-            }
-            // FP -> TP
-            else
-            {
-                tpRoot.localEulerAngles = Vector3.up * fpRoot.localEulerAngles.y;
-                tpRig.localEulerAngles = Vector3.right * fpRig.localEulerAngles.x;
-            }
-        }
-    }
-
-    private void Rotate()
-    {
-        Transform root, rig;
-
-        // 1인칭
-        if (isCurrentFp)
-        {
-            root = fpRoot;
-            rig = fpRig;
-        }
-        // 3인칭
-        else
-        {
-            root = tpRoot;
-            rig = tpRig;
-            //RotateFpRoot();
-        }
-
-        // 회전 ==========================================================
-        float deltaCoef = Time.deltaTime * 50f;
-
-        // 상하 : Rig 회전
-        float xRotPrev = rig.localEulerAngles.x;
-        float xRotNext = xRotPrev + _rotation.y
-            * rotationSpeed * deltaCoef;
-
-        if (xRotNext > 180f)
-            xRotNext -= 360f;
-
-        // 좌우 : Root 회전
-        float yRotPrev = root.localEulerAngles.y;
-        float yRotNext =
-            yRotPrev + _rotation.x
-            * rotationSpeed * deltaCoef;
-
-        // 상하 회전 가능 여부
-        bool xRotatable =
-            lookUpDegree < xRotNext &&
-            lookDownDegree > xRotNext;
-
-        // Rig 상하 회전 적용
-        rig.localEulerAngles = Vector3.right * (xRotatable ? xRotNext : xRotPrev);
-
-        // Root 좌우 회전 적용
-        root.localEulerAngles = Vector3.up * yRotNext;
-    }
-
-    /// <summary> 3인칭일 경우 Walker 회전 </summary>
-    private void RotateFpRoot()
-    {
-        if (isMoving == false) return;
-
-        Vector3 dir = tpRig.TransformDirection(_moveDir);
-        float currentY = fpRoot.localEulerAngles.y;
-        float nextY = Quaternion.LookRotation(dir, Vector3.up).eulerAngles.y;
-
-        if (nextY - currentY > 180f) nextY -= 360f;
-        else if (currentY - nextY > 180f) nextY += 360f;
-
-        fpRoot.eulerAngles = Vector3.up * Mathf.Lerp(currentY, nextY, 0.1f);
-    }
-
     /*player 이동 관련 함수*/
     private void Move()
     {
-        // 실제 이동 벡터 계산
-        // 1인칭
-        if (isCurrentFp)
-        {
-            _worldMove = fpRoot.TransformDirection(_moveDir);
-        }
-        // 3인칭
-        else
-        {
-            _worldMove = tpRig.TransformDirection(_moveDir);
-        }
 
-        _worldMove *= (speed) * (isRunning ? runningCoef : 1f);
 
         // 애니메이션 변수 설정
         if (isMoving)
@@ -317,9 +157,6 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("isRunning", false);
         }
-
-        // Y축 속도는 유지하면서 XZ평면 이동
-        rigid.velocity = new Vector3(_worldMove.x, rigid.velocity.y, _worldMove.z);
     }
 
     private void Jump()
@@ -348,25 +185,8 @@ public class PlayerController : MonoBehaviour
         isGrounded = _distFromGround <= _groundCheckRadius + threshold;
     }
 
-    public void Set3DName(string name)
+    public void SetName(string name)
     {
         GetComponentInChildren<Text>().text = name;
-    }
-
-
-    void UpdateStatusToServer()
-    {
-        //hash table <key, value>
-        Dictionary<string, string> data = new Dictionary<string, string>();
-        data["local_player_email"] = email;
-        data["position"] = transform.position.x + ":" + transform.position.y + ":" + transform.position.z;
-        data["rotation"] = transform.rotation.y.ToString();
-
-
-    }
-
-    public void SetUICamera(bool toggle)
-    {
-        tpCamObject.SetActive(toggle);
     }
 }

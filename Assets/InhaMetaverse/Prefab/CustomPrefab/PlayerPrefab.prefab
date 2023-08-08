@@ -1023,13 +1023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PV: {fileID: 0}
-  PlayerCamera: {fileID: 0}
-  tpCamera: {fileID: 5431262042527217483}
-  fpCamera: {fileID: 5431262042693809545}
-  uiCamera: {fileID: 0}
-  tpCamObject: {fileID: 0}
-  fpCamObject: {fileID: 0}
-  uiCamObject: {fileID: 0}
+  animator: {fileID: 0}
   tpRoot: {fileID: 0}
   tpRig: {fileID: 0}
   fpRoot: {fileID: 0}
@@ -1044,10 +1038,6 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  initialCamera: 0
-  rotationSpeed: 10
-  lookUpDegree: -60
-  lookDownDegree: 75
   email: 
   socketId: 
   isOnline: 0

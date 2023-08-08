@@ -55,19 +55,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         // newPlayer = GameObject.Instantiate( network player avatar or model, spawn position, spawn rotation)
         newPlayer = PhotonNetwork.Instantiate("Cube",
-                new Vector3(0, 5, 0), Quaternion.identity).GetComponent<PlayerManager>();
+                new Vector3(0, 15, 0), Quaternion.identity).GetComponent<PlayerManager>();
         newPlayer.SetName(name);
         LocalPlayer = newPlayer;
-        InteractManager.instance.player = newPlayer;
     }
-
-    //public void Connect() => PhotonNetwork.ConnectUsingSettings();
-    //public override void OnConnectedToMaster()
-    //{
-    //    Debug.Log("서버 접속 완료");
-    //    //PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
-    //    UIManager.GetComponent<UIManager>().ShowControlPanel();
-    //}
 
 
     public void DisConnect() => PhotonNetwork.Disconnect();

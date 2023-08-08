@@ -15,6 +15,8 @@ public class InteractManager : MonoBehaviour
 
     public GameObject UIManager;
 
+    public GameObject hongbo, meeting;
+
     Renderer ObjectColor;
 
     public List<Transform> ObjectList;
@@ -83,6 +85,8 @@ public class InteractManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             isInteracted = !isInteracted;
+            hongbo.SetActive(false);
+            meeting.SetActive(true);
             NetworkManager.instance.LeaveRoom("Team1");
         }
     }

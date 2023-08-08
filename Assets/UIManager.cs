@@ -19,6 +19,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject SimplePanel;
 
+
+    [Tooltip("웹사이트의 로그인 화면을 임시로 구현한 패널")]
+    [SerializeField]
+    private GameObject WebsitePanel;
+
     [Tooltip("전체 캔버스")]
     [SerializeField]
     private GameObject Canvas;
@@ -43,6 +48,7 @@ public class UIManager : MonoBehaviour
     public void HideSimplePanel()
     {
         SimplePanel.SetActive(false);
+        WebsitePanel.SetActive(false);
     }
     public void StartGame()
     {

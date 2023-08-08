@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour
     public void Awake()
     {
 		isLocalPlayer = PV.IsMine;
-    }
+	}
 
 	public void SetName(string name)
     {
