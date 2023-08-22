@@ -57,7 +57,7 @@ public class CameraMovement : MonoBehaviour
         rotX = transform.localRotation.eulerAngles.x;
         rotY = transform.localRotation.eulerAngles.y;
 
-        Debug.Log(realCamera.localPosition);
+        //Debug.Log(realCamera.localPosition);
         dirNormalized = realCamera.localPosition.normalized;
         finalDistance = realCamera.localPosition.magnitude;
 

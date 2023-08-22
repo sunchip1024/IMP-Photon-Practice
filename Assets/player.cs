@@ -23,13 +23,25 @@ public class player : MonoBehaviour
     public bool isMoving;
     public bool isRunning;
 
+    public bool isLocalPlayer = false;
+
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        try
+        {
+            animator = GetComponent<Animator>();
+        }
+        catch
+        {
+            Debug.Log("There is no animator");
+        }
+        
+        if (PV.IsMine) isLocalPlayer = true;
     }
 
     void Update()
     {
+        if (!isLocalPlayer) return;
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
@@ -46,7 +58,7 @@ public class player : MonoBehaviour
         transform.Translate(movement);
 
         Turn();
-        SetAnimation();
+        if(animator) SetAnimation();
     }
 
     void Turn()

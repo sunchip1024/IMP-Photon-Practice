@@ -15,13 +15,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public PhotonView Photonview;
 
+    public string PlayerPrefabName = "PlayerPrefab";
+
     private PlayerManager LocalPlayer;
     public string RoomToMove;
 
     void Awake()
     {
         instance = this;
-        Screen.SetResolution(960, 540, false);
+        //Screen.SetResolution(960, 540, false);
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -52,9 +54,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void GeneratePlayer(string name)
     {
         player newPlayer;
-
-        // newPlayer = GameObject.Instantiate( network player avatar or model, spawn position, spawn rotation)
-        newPlayer = PhotonNetwork.Instantiate("PlayerPrefab",
+        newPlayer = PhotonNetwork.Instantiate(PlayerPrefabName,
                 new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
 
         CameraMovement.instance.Set();
@@ -102,7 +102,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.LogFormat("방 참가 완료 : {0}", PhotonNetwork.CurrentRoom);
         RoomText.text = PhotonNetwork.CurrentRoom.Name;
-        UIManager.GetComponent<UIManager>().HideSimplePanel();
+        UIManager.GetComponent<UIManager>().ClearPanels();
         GeneratePlayer(NickNameInput.text);
 
     }
@@ -151,6 +151,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             print("로비에 있는지? : " + PhotonNetwork.InLobby);
             print("연결됐는지? : " + PhotonNetwork.IsConnected);
         }
+    }
+
+    public void SetPlayerPrefab(string PrefabName)
+    {
+        PlayerPrefabName = PrefabName;
     }
 
     [ContextMenu("상태")]

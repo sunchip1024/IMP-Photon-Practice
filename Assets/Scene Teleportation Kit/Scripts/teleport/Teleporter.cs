@@ -4,16 +4,17 @@ using UnityEngine.SceneManagement;
 
 namespace Scene_Teleportation_Kit.Scripts.teleport
 {
+    
     public class Teleporter : MonoBehaviour {
         public Object destinationScene;
         public string destSpawnName;
 
+        public Vector3 ToMove;
+
         void OnTriggerEnter(Collider collider) {
             Debug.Log("Ontriggerenter");
-            //Teleportable teleportable = collider.GetComponent<Teleportable>();
-            //if (teleportable != null) {
-            //    OnEnter(teleportable);
-            //}
+            Debug.Log(ToMove);
+            
         }
 
         //public void OnEnter(Teleportable teleportable) {
