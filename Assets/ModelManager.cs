@@ -20,8 +20,10 @@ public class ModelManager : MonoBehaviour
     public void SetHongbo()
     {
         ClearPortals();
-        nature.SetActive(true);
+        //nature.SetActive(true);
         hongbo.SetActive(true);
+        Debug.Log(NetworkManager.instance.TeamIndex + "번 이미지로 세팅");
+        ImageManager.instance.ChangeImage(NetworkManager.instance.TeamIndex);
     }
 
     public void SetMeeting()

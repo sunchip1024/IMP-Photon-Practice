@@ -62,11 +62,17 @@ public class PlayerController : MonoBehaviour
 
     float v;
 
+    /*
+     player UI
+     */
+    public Text PlayerName;
+
     public void Set()
     {
         Debug.Log("¼¼ÆÃ!");
         isLocalPlayer = PV.IsMine;
         //tpCamera.enabled = isLocalPlayer;
+        Debug.Log(name);
 
         GetComponentInChildren<Text>().text = name;
 
@@ -84,6 +90,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("start");
         Set();
     }
 

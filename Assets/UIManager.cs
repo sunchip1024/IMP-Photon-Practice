@@ -32,6 +32,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject CharacterSelectPanel;
 
+    [Tooltip("팀 선택용 패널")]
+    [SerializeField]
+    private GameObject TeamSelectPanel;
+
     [Tooltip("전체 캔버스")]
     [SerializeField]
     private GameObject Canvas;
@@ -71,6 +75,7 @@ public class UIManager : MonoBehaviour
         SimplePanel.SetActive(false);
         WebsitePanel.SetActive(false);
         CharacterSelectPanel.SetActive(false);
+        TeamSelectPanel.SetActive(false);
     }
     public void StartGame()
     {

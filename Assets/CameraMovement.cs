@@ -52,7 +52,6 @@ public class CameraMovement : MonoBehaviour
 
     public void Set()
     {
-        Debug.Log("Set!");
 
         rotX = transform.localRotation.eulerAngles.x;
         rotY = transform.localRotation.eulerAngles.y;

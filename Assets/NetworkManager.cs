@@ -8,10 +8,13 @@ using UnityEngine.UI;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public Text StatusText, RoomText;
-    public InputField RoomInput, NickNameInput;
+    public InputField RoomInput, NickNameInput, TeamInput;
     public GameObject UIManager;
     public static NetworkManager instance;
     public GameObject LocalPlayerPrefab;
+
+    //접속하고자 하는 팀 인덱스 저장
+    public int TeamIndex;
 
     public PhotonView Photonview;
 
@@ -23,6 +26,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         instance = this;
+        Debug.Log("비율 설정");
+        //Screen.SetResolution(1920, 1080, false);
         //Screen.SetResolution(960, 540, false);
         PhotonNetwork.ConnectUsingSettings();
     }
@@ -56,6 +61,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         player newPlayer;
         newPlayer = PhotonNetwork.Instantiate(PlayerPrefabName,
                 new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
+
+        newPlayer.playername = name;
 
         CameraMovement.instance.Set();
         CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
@@ -104,6 +111,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomText.text = PhotonNetwork.CurrentRoom.Name;
         UIManager.GetComponent<UIManager>().ClearPanels();
         GeneratePlayer(NickNameInput.text);
+        try
+        {
+            TeamIndex = int.Parse(TeamInput.text);
+        }
+        catch
+        {
+            TeamIndex = 0;
+        }
 
     }
     public override void OnCreateRoomFailed(short returnCode, string message)

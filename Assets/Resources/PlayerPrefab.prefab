@@ -835,6 +835,8 @@ MonoBehaviour:
   isMoving: 0
   isRunning: 0
   isLocalPlayer: 0
+  PlayerName: {fileID: 0}
+  playername: 
 --- !u!95 &3250134624885201482
 Animator:
   serializedVersion: 4

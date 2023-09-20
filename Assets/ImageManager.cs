@@ -13,6 +13,19 @@ public class ImageManager : MonoBehaviour
 
     public List<Sprite> SpriteList;
 
+    public List<GameObject> ModelList;
+
+    public GameObject HongboPanel;
+    public Text HongboText;
+
+    public void ClearModels()
+    {
+        foreach(GameObject model in ModelList)
+        {
+            model.SetActive(false);
+        }
+    }
+
     [ContextMenu("이미지 변경")]
     public void ChangeImage()
     {
@@ -22,12 +35,22 @@ public class ImageManager : MonoBehaviour
         }
     }
 
+    //public void ChangeImage(int index)
+    //{
+    //    foreach (GameObject panel in PromotionPanelList)
+    //    {
+    //        panel.GetComponentInChildren<Canvas>().GetComponentInChildren<Image>().sprite = SpriteList[index];
+    //    }
+    //}
+
     public void ChangeImage(int index)
     {
-        foreach (GameObject panel in PromotionPanelList)
-        {
-            panel.GetComponentInChildren<Canvas>().GetComponentInChildren<Image>().sprite = SpriteList[index];
-        }
+        HongboPanel.GetComponent<Image>().sprite = SpriteList[index];
+        HongboText.text = index + "번째 팀 홍보공간";
+
+        ClearModels();
+        ModelList[index].SetActive(true);
+        
     }
     private void Awake()
     {

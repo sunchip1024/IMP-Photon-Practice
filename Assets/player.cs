@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -25,6 +26,10 @@ public class player : MonoBehaviour
 
     public bool isLocalPlayer = false;
 
+    //UI 처리
+    public Text PlayerName;
+    public string playername;
+
     private void Start()
     {
         try
@@ -37,6 +42,7 @@ public class player : MonoBehaviour
         }
         
         if (PV.IsMine) isLocalPlayer = true;
+        if(isLocalPlayer) SetName(playername);
     }
 
     void Update()
@@ -91,6 +97,28 @@ public class player : MonoBehaviour
         else
         {
             animator.SetBool("isRunning", false);
+        }
+    }
+    private void SetName(string name)
+    {
+        Debug.Log(name + "으로 세팅하겠습니다!");
+        PV.RPC(nameof(SetNameRPC), RpcTarget.AllBuffered, name);
+    }
+
+    [PunRPC]
+    public void SetNameRPC(string name)
+    {
+        PlayerName = GetComponentInChildren<Text>();
+        PlayerName.text = name;
+
+        if (isLocalPlayer)
+        {
+            Debug.Log("Local");
+            PlayerName.enabled = false;
+        }
+        else
+        {
+            Debug.Log("Not local");
         }
     }
 
