@@ -38,6 +38,7 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform.position = objectTofollow.position;
         //rotX = transform.localRotation.eulerAngles.x;
         //rotY = transform.localRotation.eulerAngles.y;
 
@@ -68,10 +69,11 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         if (objectTofollow == null) return;
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             rotX -= Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-            rotY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+            //rotY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+            rotY = transform.rotation.eulerAngles.y;
 
             rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
 
