@@ -12,6 +12,7 @@ public class player : MonoBehaviour
 
     public float walkSpeed = 5.0f;
     public float runSpeed = 10.0f;
+    public float jumpPower = 5.0f;
     private float rotX;
     private float rotY;
     [SerializeField] float sensitivity;
@@ -25,10 +26,13 @@ public class player : MonoBehaviour
     public bool isRunning;
 
     public bool isLocalPlayer = false;
+    public bool isJumping = false;
 
     //UI 처리
     public Text PlayerName;
     public string playername;
+
+    public Rigidbody rigid;
 
     private void Start()
     {
@@ -43,6 +47,8 @@ public class player : MonoBehaviour
         
         if (PV.IsMine) isLocalPlayer = true;
         if(isLocalPlayer) SetName(playername);
+
+        rigid = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -55,6 +61,7 @@ public class player : MonoBehaviour
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
         Vector3 movement = new Vector3(horizontalInput, 0.0f, verticalInput) * (isRunning ? runSpeed : walkSpeed) * Time.deltaTime;
+        
 
         //if (!CheckWallCollision(movement))
         //{
@@ -62,7 +69,7 @@ public class player : MonoBehaviour
         //}
 
         transform.Translate(movement);
-
+        Jump();
         Turn();
         if(animator) SetAnimation();
     }
@@ -119,6 +126,38 @@ public class player : MonoBehaviour
         else
         {
             Debug.Log("Not local");
+        }
+    }
+
+    void Jump()
+    {
+        //스페이스 키를 누르면 점프
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //바닥에 있으면 점프를 실행
+            if (!isJumping)
+            {
+                //print("점프 가능 !");
+                isJumping = true;
+                rigid.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            }
+
+            //공중에 떠있는 상태이면 점프하지 못하도록 리턴
+            else
+            {
+                //print("점프 불가능 !");
+                return;
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //바닥에 닿으면
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            //점프가 가능한 상태로 만듦
+            isJumping = false;
         }
     }
 

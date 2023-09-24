@@ -64,7 +64,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         newPlayer.playername = name;
 
-        CameraMovement.instance.Set();
+        //CameraMovement.instance.Set();
         CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
         
     }

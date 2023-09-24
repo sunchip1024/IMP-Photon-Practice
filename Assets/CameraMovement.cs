@@ -15,6 +15,9 @@ public class CameraMovement : MonoBehaviour
     private float rotY;
 
     public Transform realCamera;
+
+    public GameObject PovCamera;
+
     public Vector3 dirNormalized;
     public Vector3 finalDir;
     public float minDistance;
@@ -24,7 +27,7 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField] float m_zoomSpeed = 4f;
     [SerializeField] float m_zoomMax = 2f;
-    [SerializeField] float m_zoomMin = 16f;
+    [SerializeField] float m_zoomMin = 12f;
     [SerializeField] float currentZoom = 0f;
 
     //currentZoom과 maxDistance의 비율
@@ -38,7 +41,9 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("hello");
         transform.position = objectTofollow.position;
+        Set();
         //rotX = transform.localRotation.eulerAngles.x;
         //rotY = transform.localRotation.eulerAngles.y;
 
@@ -61,7 +66,7 @@ public class CameraMovement : MonoBehaviour
         dirNormalized = realCamera.localPosition.normalized;
         finalDistance = realCamera.localPosition.magnitude;
 
-        currentZoom = 5f;
+        currentZoom = 4f;
 
     }
 
@@ -91,20 +96,38 @@ public class CameraMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, objectTofollow.position, followSpeed * Time.deltaTime);
 
         finalDir = transform.TransformPoint(dirNormalized * maxDistance);
-        //finalDistance = maxDistance;
 
-        RaycastHit hit;
-        if (Physics.Linecast(transform.position, finalDir, out hit))
-        {
-            finalDistance = Mathf.Clamp(hit.distance, minDistance, maxDistance);
-        }
-        else
-        {
-            finalDistance = maxDistance;
-        }
-        //Debug.Log($"{realCamera.localPosition}, {dirNormalized * finalDistance}");
-        realCamera.localPosition = Vector3.Lerp(realCamera.localPosition, dirNormalized * finalDistance, Time.deltaTime * smoothness);
-        //realCamera.localPosition = dirNormalized * finalDistance;
+        //RaycastHit hit;
+        //if (Physics.Linecast(transform.position, finalDir, out hit))
+        //{
+        //    finalDistance = Mathf.Clamp(hit.distance, minDistance, maxDistance);
+        //    Debug.Log(finalDistance);
+        //}
+        //else
+        //{
+        //    finalDistance = maxDistance;
+        //}
+
+        //Debug.Log(finalDistance);
+        finalDistance = maxDistance;
+
+        Vector3 offset = objectTofollow.position - (transform.forward * finalDistance);
+        transform.position = offset;
+
+
+        //RaycastHit hit;
+        //if (Physics.Linecast(transform.position, finalDir, out hit))
+        //{
+        //    finalDistance = Mathf.Clamp(hit.distance, minDistance, maxDistance);
+        //}
+        //else
+        //{
+        //    finalDistance = maxDistance;
+        //}
+        ////Debug.Log($"{realCamera.localPosition}, {dirNormalized * finalDistance}");
+        ///realCamera.localPosition = Vector3.Lerp(realCamera.localPosition, dirNormalized * finalDistance, Time.deltaTime * smoothness);
+        //realCamera.localPosition = Vector3.Lerp(objectTofollow.position, dirNormalized * finalDistance, Time.deltaTime * smoothness);
+        ////realCamera.localPosition = dirNormalized * finalDistance;
     }
 
     void CameraZoom()
@@ -114,6 +137,11 @@ public class CameraMovement : MonoBehaviour
         if (currentZoom < m_zoomMax) Debug.Log("1인칭 모드");
         currentZoom = Mathf.Clamp(currentZoom, m_zoomMax, m_zoomMin);
         maxDistance = currentZoom * ScrollSensitivty;
+    }
+
+    public void TogglePerspective()
+    {
+        
     }
 
 }
