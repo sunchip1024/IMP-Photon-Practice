@@ -31,7 +31,7 @@ public class ImageManager : MonoBehaviour
     {
         foreach(GameObject panel in PromotionPanelList)
         {
-            panel.GetComponentInChildren<Canvas>().GetComponentInChildren<Image>().sprite = SpriteList[0];
+            panel.GetComponent<Canvas>().GetComponentInChildren<Image>().sprite = SpriteList[0];
         }
     }
 
@@ -43,10 +43,14 @@ public class ImageManager : MonoBehaviour
     //    }
     //}
 
-    public void ChangeImage(int index)
+    public void ChangeTeam(int index)
     {
-        HongboPanel.GetComponent<Image>().sprite = SpriteList[index];
-        HongboText.text = index + "¹øÂ° ÆÀ È«º¸°ø°£";
+        foreach(GameObject canvas in PromotionPanelList)
+        {
+            canvas.GetComponentInChildren<Image>().sprite = SpriteList[index];
+        }
+        //HongboPanel.GetComponent<Image>().sprite = SpriteList[index];
+        //HongboText.text = index + "¹øÂ° ÆÀ È«º¸°ø°£";
 
         ClearModels();
         ModelList[index].SetActive(true);

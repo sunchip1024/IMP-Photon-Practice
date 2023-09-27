@@ -16,8 +16,6 @@ public class CameraMovement : MonoBehaviour
 
     public Transform realCamera;
 
-    public GameObject PovCamera;
-
     public Vector3 dirNormalized;
     public Vector3 finalDir;
     public float minDistance;
@@ -32,6 +30,10 @@ public class CameraMovement : MonoBehaviour
 
     //currentZoom과 maxDistance의 비율
     [SerializeField] float ScrollSensitivty;
+
+    //1인칭 3인칭 전환용
+    public GameObject PovCamera;
+    public GameObject PlayerBody;
 
     private void Awake()
     {
@@ -134,14 +136,17 @@ public class CameraMovement : MonoBehaviour
     {
         float t_zoomDirection = Input.GetAxis("Mouse ScrollWheel");
         currentZoom -= t_zoomDirection * m_zoomSpeed;
-        if (currentZoom < m_zoomMax) Debug.Log("1인칭 모드");
+        if (currentZoom <= m_zoomMax) TogglePerspective(true);
+        else TogglePerspective(false);
+
         currentZoom = Mathf.Clamp(currentZoom, m_zoomMax, m_zoomMin);
         maxDistance = currentZoom * ScrollSensitivty;
     }
 
-    public void TogglePerspective()
+    public void TogglePerspective(bool toggle)
     {
-        
+        PlayerBody.SetActive(!toggle);
+        PovCamera.SetActive(toggle);
     }
 
 }

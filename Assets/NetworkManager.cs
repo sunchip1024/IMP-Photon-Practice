@@ -53,6 +53,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void Join()
     {
+        
         PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 6 }, null);
     }
 
@@ -109,7 +110,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.LogFormat("방 참가 완료 : {0}", PhotonNetwork.CurrentRoom);
         RoomText.text = PhotonNetwork.CurrentRoom.Name;
-        UIManager.GetComponent<UIManager>().ClearPanels();
+        UIManager.GetComponent<UIManager>().HideLobbyCanvas();
+        UIManager.GetComponent<UIManager>().ShowForumCanvas();
         GeneratePlayer(NickNameInput.text);
         try
         {

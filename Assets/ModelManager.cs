@@ -6,7 +6,9 @@ public class ModelManager : MonoBehaviour
 {
     public static ModelManager instance;
     public GameObject nature, hongbo, meeting;
+    public GameObject LobbyFloor;
     public List<GameObject> Portals;
+
     // Start is called before the first frame update
 
     public void ClearPortals()
@@ -20,10 +22,11 @@ public class ModelManager : MonoBehaviour
     public void SetHongbo()
     {
         ClearPortals();
+        LobbyFloor.SetActive(false);
         //nature.SetActive(true);
         hongbo.SetActive(true);
         Debug.Log(NetworkManager.instance.TeamIndex + "번 이미지로 세팅");
-        ImageManager.instance.ChangeImage(NetworkManager.instance.TeamIndex);
+        ImageManager.instance.ChangeTeam(NetworkManager.instance.TeamIndex);
     }
 
     public void SetMeeting()

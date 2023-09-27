@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
 
     public void ToggleMusic()
     {
+        Debug.Log("≈‰±€");
         isMuted = !isMuted;
         audioSource.mute = isMuted;
     }

@@ -36,9 +36,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject TeamSelectPanel;
 
-    [Tooltip("전체 캔버스")]
+    [Tooltip("로비 캔버스")]
     [SerializeField]
     private GameObject Canvas;
+
+    [Tooltip("포럼 캔버스")]
+    [SerializeField]
+    private GameObject ForumCanvas;
 
     [Tooltip("테스트 패널")]
     [SerializeField]
@@ -57,9 +61,13 @@ public class UIManager : MonoBehaviour
 
     #region Public Methods
 
-    public void ShowCanvas()
+    public void ShowLobbyCanvas()
     {
         Canvas.SetActive(true);
+    }
+    public void HideLobbyCanvas()
+    {
+        Canvas.SetActive(false);
     }
     public void ShowControlPanel()
     {
@@ -69,6 +77,11 @@ public class UIManager : MonoBehaviour
     public void ShowSimplePanel()
     {
         SimplePanel.SetActive(true);
+    }
+
+    public void ShowForumCanvas()
+    {
+        ForumCanvas.SetActive(true);
     }
     public void ClearPanels()
     {
@@ -85,7 +98,8 @@ public class UIManager : MonoBehaviour
     public void EmitChangeImage()
     {
         int index = int.Parse(ImageIndex.text);
-        ImageManager.instance.ChangeImage(index);
+        Debug.Log(index);
+        ImageManager.instance.ChangeTeam(index);
     }
 
 
