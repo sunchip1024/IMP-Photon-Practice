@@ -34,6 +34,8 @@ public class player : MonoBehaviour
 
     public Rigidbody rigid;
 
+    public GameObject cameras;
+
     private void Start()
     {
         try
@@ -46,7 +48,13 @@ public class player : MonoBehaviour
         }
         
         if (PV.IsMine) isLocalPlayer = true;
-        if(isLocalPlayer) SetName(playername);
+        if (isLocalPlayer)
+        {
+            SetName(playername);
+            cameras.SetActive(true);
+            gameObject.tag = "LocalPlayer";
+            //CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
+        }
 
         rigid = GetComponent<Rigidbody>();
     }

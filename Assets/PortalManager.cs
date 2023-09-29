@@ -14,17 +14,21 @@ public class PortalManager : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        switch(PlaceToMove)
+        if(collider.tag == "LocalPlayer")
         {
-            case PLACE.HONGBO:
-                Debug.Log("홍보 공간으로 이동");
-                ModelManager.instance.SetHongbo();
-                break;
-            case PLACE.MEETING:
-                Debug.Log("미팅 공간으로 이동");
-                ModelManager.instance.SetMeeting();
-                break;
+            switch (PlaceToMove)
+            {
+                case PLACE.HONGBO:
+                    Debug.Log("홍보 공간으로 이동");
+                    ModelManager.instance.SetHongbo();
+                    break;
+                case PLACE.MEETING:
+                    Debug.Log("미팅 공간으로 이동");
+                    ModelManager.instance.SetMeeting();
+                    break;
+            }
         }
+        
 
     }
     // Start is called before the first frame update

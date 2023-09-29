@@ -57,6 +57,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 6 }, null);
     }
 
+    public void Join(string roomName)
+    {
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 6 }, null);
+    }
+
     public void GeneratePlayer(string name)
     {
         player newPlayer;
@@ -66,7 +71,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         newPlayer.playername = name;
 
         //CameraMovement.instance.Set();
-        CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
+        //CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
         
     }
 
