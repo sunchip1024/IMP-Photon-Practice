@@ -26,7 +26,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         instance = this;
-        Debug.Log("비율 설정");
         //Screen.SetResolution(1920, 1080, false);
         //Screen.SetResolution(960, 540, false);
         PhotonNetwork.ConnectUsingSettings();
@@ -38,6 +37,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         StatusText.text = PhotonNetwork.NetworkClientState.ToString();
         if(PhotonNetwork.InLobby && RoomToMove != string.Empty)
         {
+            
             JoinOrCreateRoom(RoomToMove);
             RoomToMove = null;
         }
@@ -51,16 +51,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     }
 
+    //public void Join()
+    //{
+
+    //    PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 6 }, null);
+    //}
     public void Join()
     {
-        
-        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 6 }, null);
-    }
-
-    public void Join(string roomName)
-    {
+        string roomName = "Team" + TeamIndex;
+        Debug.Log("로딩 이미지");
+        UIManager.GetComponent<UIManager>().ToggleLoading(true);
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 6 }, null);
     }
+
+    //public void Join(int teamIndex)
+    //{
+    //    string roomName = "Team" + teamIndex;
+    //    PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 6 }, null);
+    //}
+
+    
 
     public void GeneratePlayer(string name)
     {
@@ -69,10 +79,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
 
         newPlayer.playername = name;
-
+        UIManager.GetComponent<UIManager>().ToggleLoading(false);
         //CameraMovement.instance.Set();
         //CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
-        
+
     }
 
 
@@ -80,13 +90,33 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.LogFormat("연결 끊김, 사유 : {0}", cause);
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
 
-    public void JoinLobby() => PhotonNetwork.JoinLobby();
+    public void JoinLobby()
+    {
+        Debug.Log("로비에 접속할게요!");
+        PhotonNetwork.JoinLobby();
+    }
     public override void OnJoinedLobby()
     {
         Debug.Log("로비 접속 완료");
+        //UIManager.GetComponent<UIManager>().HideLobbyCanvas();
+        //UIManager.GetComponent<UIManager>().ShowForumCanvas();
+        //GeneratePlayer(NickNameInput.text);
+        //try
+        //{
+        //    TeamIndex = int.Parse(TeamInput.text);
+        //}
+        //catch
+        //{
+        //    TeamIndex = 0;
+        //}
     }
 
     //방 만들기 및 참가
@@ -99,6 +129,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
         RoomToMove = RoomName;
+        Debug.Log("room to move : " + RoomName);
     }
 
     public override void OnLeftRoom()
@@ -118,14 +149,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         UIManager.GetComponent<UIManager>().HideLobbyCanvas();
         UIManager.GetComponent<UIManager>().ShowForumCanvas();
         GeneratePlayer(NickNameInput.text);
-        try
-        {
-            TeamIndex = int.Parse(TeamInput.text);
-        }
-        catch
-        {
-            TeamIndex = 0;
-        }
+        //try
+        //{
+        //    SetTeamIndex(int.Parse(TeamInput.text));
+        //}
+        //catch
+        //{
+        //    TeamIndex = 0;
+        //}
 
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -184,6 +215,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     void Status()
     {
         Debug.Log(PhotonNetwork.NetworkClientState);
+    }
+
+    public void ChangeTeam(int index)
+    {
+        UIManager.GetComponent<UIManager>().ToggleLoading(true);
+        LeaveRoom("Team" + index);
+        ImageManager.instance.ChangeTeam(index);
+    }
+
+    public void SetTeamIndex(int index)
+    {
+        Debug.Log($"Teamindex : {index}");
+        TeamIndex = index;
     }
     
 }

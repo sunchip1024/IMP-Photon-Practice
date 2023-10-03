@@ -53,7 +53,6 @@ public class player : MonoBehaviour
             SetName(playername);
             cameras.SetActive(true);
             gameObject.tag = "LocalPlayer";
-            //CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
         }
 
         rigid = GetComponent<Rigidbody>();

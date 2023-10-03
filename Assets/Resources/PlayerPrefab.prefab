@@ -1064,7 +1064,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 10
   jumpPower: 8
-  sensitivity: 800
+  sensitivity: 200
   followCam: {fileID: 6484265923776925945}
   isMoving: 0
   isRunning: 0

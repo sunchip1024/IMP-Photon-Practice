@@ -21,6 +21,7 @@ public class PortalManager : MonoBehaviour
                 case PLACE.HONGBO:
                     Debug.Log("홍보 공간으로 이동");
                     ModelManager.instance.SetHongbo();
+                    //NetworkManager.instance.Join("Hongbo");
                     break;
                 case PLACE.MEETING:
                     Debug.Log("미팅 공간으로 이동");
@@ -28,8 +29,6 @@ public class PortalManager : MonoBehaviour
                     break;
             }
         }
-        
-
     }
     // Start is called before the first frame update
     void Start()

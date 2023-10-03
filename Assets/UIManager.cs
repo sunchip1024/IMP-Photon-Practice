@@ -52,6 +52,12 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private InputField ImageIndex;
 
+    [Tooltip("로딩 이미지")]
+    public Image LoadingImage;
+
+    [Tooltip("프레임 텍스트")]
+    public Text FrameText;
+
     #endregion
 
     #region Public Variables
@@ -95,11 +101,20 @@ public class UIManager : MonoBehaviour
         ControlPanel.SetActive(false);
     }
 
-    public void EmitChangeImage()
+    public void EmitChangeTeam()
     {
         int index = int.Parse(ImageIndex.text);
-        Debug.Log(index);
-        ImageManager.instance.ChangeTeam(index);
+        NetworkManager.instance.ChangeTeam(index);
+    }
+
+    public void ToggleLoading(bool toggle)
+    {
+        LoadingImage.enabled = toggle;
+    }
+
+    public int GetCurrentFrame()
+    {
+        return Time.frameCount;
     }
 
 
@@ -119,5 +134,6 @@ public class UIManager : MonoBehaviour
             isTestPanelActivated = !isTestPanelActivated; // 가시성 상태를 토글
             TestPanel.SetActive(isTestPanelActivated); // 패널의 가시성을 설정된 상태로 변경
         }
+        FrameText.text = $"Frame : { 1/Time.deltaTime}";
     }
 }
