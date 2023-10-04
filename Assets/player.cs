@@ -46,7 +46,7 @@ public class player : MonoBehaviour
         {
             Debug.Log("There is no animator");
         }
-        
+
         if (PV.IsMine) isLocalPlayer = true;
         if (isLocalPlayer)
         {
@@ -68,7 +68,7 @@ public class player : MonoBehaviour
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
         Vector3 movement = new Vector3(horizontalInput, 0.0f, verticalInput) * (isRunning ? runSpeed : walkSpeed) * Time.deltaTime;
-        
+
 
         //if (!CheckWallCollision(movement))
         //{
@@ -78,7 +78,7 @@ public class player : MonoBehaviour
         transform.Translate(movement);
         Jump();
         Turn();
-        if(animator) SetAnimation();
+        if (animator) SetAnimation();
     }
 
     void Turn()

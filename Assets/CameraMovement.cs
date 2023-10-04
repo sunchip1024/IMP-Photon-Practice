@@ -146,6 +146,7 @@ public class CameraMovement : MonoBehaviour
     {
         PlayerBody.SetActive(!toggle);
         PovCamera.SetActive(toggle);
-    }
 
+
+    }
 }

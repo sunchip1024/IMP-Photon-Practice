@@ -79,7 +79,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
 
         newPlayer.playername = name;
+        ModelManager.instance.SetHongbo();
         UIManager.GetComponent<UIManager>().ToggleLoading(false);
+
         //CameraMovement.instance.Set();
         //CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
 
