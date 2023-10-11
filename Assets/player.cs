@@ -35,6 +35,7 @@ public class player : MonoBehaviour
     public Rigidbody rigid;
 
     public GameObject cameras;
+    public GameObject NameCanvas;
 
     private void Start()
     {
@@ -50,11 +51,16 @@ public class player : MonoBehaviour
         if (PV.IsMine) isLocalPlayer = true;
         if (isLocalPlayer)
         {
+            Debug.Log("로컬이군요!");
             SetName(playername);
             cameras.SetActive(true);
             gameObject.tag = "LocalPlayer";
+            NameCanvas.SetActive(false);
         }
-
+        else
+        {
+            Debug.Log("로컬이 아니군요!");
+        }
         rigid = GetComponent<Rigidbody>();
     }
 
@@ -128,7 +134,7 @@ public class player : MonoBehaviour
         if (isLocalPlayer)
         {
             Debug.Log("Local");
-            PlayerName.enabled = false;
+            //PlayerName.enabled = false;
         }
         else
         {

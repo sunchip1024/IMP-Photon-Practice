@@ -12,6 +12,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public GameObject UIManager;
     public static NetworkManager instance;
     public GameObject LocalPlayerPrefab;
+    public GameObject LocalPlayer;
+
 
     //접속하고자 하는 팀 인덱스 저장
     public int TeamIndex;
@@ -20,14 +22,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public string PlayerPrefabName = "PlayerPrefab";
 
-    private PlayerManager LocalPlayer;
     public string RoomToMove;
+    public Text PhotonStatusText;
 
     void Awake()
     {
         instance = this;
         //Screen.SetResolution(1920, 1080, false);
-        //Screen.SetResolution(960, 540, false);
+        Screen.SetResolution(960, 540, false);
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -35,12 +37,27 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     void Update()
     {
         StatusText.text = PhotonNetwork.NetworkClientState.ToString();
-        if(PhotonNetwork.InLobby && RoomToMove != string.Empty)
+        if(!PhotonNetwork.InRoom)
         {
-            
-            JoinOrCreateRoom(RoomToMove);
-            RoomToMove = null;
+            PhotonStatusText.text =
+                $"포톤에 접속한 인원 : {PhotonNetwork.CountOfPlayers}\n" +
+                $"모든 방에 있는 인원 : {PhotonNetwork.CountOfPlayersInRooms}\n";
+            return;
         }
+        else
+        {
+            PhotonStatusText.text =
+                $"현재 방 이름 : {PhotonNetwork.CurrentRoom.Name}\n" +
+                $"현재 방에 있는 인원 : {PhotonNetwork.CurrentRoom.PlayerCount}\n";
+
+        }
+
+
+        //if (PhotonNetwork.InLobby && RoomToMove != string.Empty)
+        //{
+        //    JoinOrCreateRoom(RoomToMove);
+        //    RoomToMove = null;
+        //}
     }
 
     public override void OnConnectedToMaster()
@@ -61,7 +78,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         string roomName = "Team" + TeamIndex;
         Debug.Log("로딩 이미지");
         UIManager.GetComponent<UIManager>().ToggleLoading(true);
-        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 6 }, null);
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 7 }, null);
     }
 
     //public void Join(int teamIndex)
@@ -74,9 +91,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void GeneratePlayer(string name)
     {
+        
         player newPlayer;
-        newPlayer = PhotonNetwork.Instantiate(PlayerPrefabName,
-                new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
+        LocalPlayer = PhotonNetwork.Instantiate(PlayerPrefabName,
+                new Vector3(0, 5, 0), Quaternion.identity);
+        newPlayer = LocalPlayer.GetComponent<player>();
+
+        //newPlayer = PhotonNetwork.Instantiate(PlayerPrefabName,
+        //        new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
 
         newPlayer.playername = name;
         ModelManager.instance.SetHongbo();
@@ -91,6 +113,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void DisConnect() => PhotonNetwork.Disconnect();
     public override void OnDisconnected(DisconnectCause cause)
     {
+        if (cause == DisconnectCause.MaxCcuReached)
+        {
+            PopupManager.instance.EmitPopup("최대 CCU를 초과했습니다!");
+            Debug.LogError("최대 CCU를 초과했습니다!");
+            return;
+        }
         Debug.LogFormat("연결 끊김, 사유 : {0}", cause);
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -108,17 +136,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("로비 접속 완료");
-        //UIManager.GetComponent<UIManager>().HideLobbyCanvas();
-        //UIManager.GetComponent<UIManager>().ShowForumCanvas();
-        //GeneratePlayer(NickNameInput.text);
-        //try
-        //{
-        //    TeamIndex = int.Parse(TeamInput.text);
-        //}
-        //catch
-        //{
-        //    TeamIndex = 0;
-        //}
+        if (RoomToMove != string.Empty)
+        {
+            JoinOrCreateRoom(RoomToMove);
+            RoomToMove = null;
+        }
     }
 
     //방 만들기 및 참가
@@ -137,9 +159,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
-        RoomText.text = "Not in the room";
+        try
+        {
+            RoomText.text = "Not in the room";
+        }
+        catch
+        {
+            return;
+        }
+        
         Debug.Log(PhotonNetwork.NetworkClientState.ToString());
-        //PhotonNetwork.JoinOrCreateRoom("Team1", new RoomOptions { MaxPlayers = 5 }, null);
     }
 
 
@@ -163,10 +192,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        PopupManager.instance.EmitPopup($"방 참가 실패, 사유 : {message}");
         Debug.LogErrorFormat("방 만들기 실패, 사유 : {0} : {1}", returnCode, message);
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
+        PopupManager.instance.EmitPopup($"방 참가 실패, 사유 : {message}");
         Debug.LogErrorFormat("방 참가 실패, 사유 : {0} : {1}", returnCode, message);
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -221,6 +252,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void ChangeTeam(int index)
     {
+        Debug.Log($"index {index}로 팀변경");
+        TeamIndex = index;
         UIManager.GetComponent<UIManager>().ToggleLoading(true);
         LeaveRoom("Team" + index);
         ImageManager.instance.ChangeTeam(index);

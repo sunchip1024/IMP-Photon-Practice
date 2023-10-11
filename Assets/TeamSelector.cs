@@ -10,6 +10,7 @@ public class TeamSelector : MonoBehaviour
     private void Start()
     {
         ClearPanels();
+        SelectPanel(TeamPanelList[0]);
     }
 
     public void ClearPanels()
@@ -27,15 +28,6 @@ public class TeamSelector : MonoBehaviour
         int index = TeamPanelList.IndexOf(panel);
         NetworkManager.instance.SetTeamIndex(index);
         Debug.Log(index);
-
-        //if (button == button1)
-        //{
-        //    NetworkManager.instance.SetPlayerPrefab("PlayerPrefab");
-        //}
-        //else
-        //{
-        //    NetworkManager.instance.SetPlayerPrefab("Cube");
-        //}
     }
 }
 

@@ -45,6 +45,7 @@ public class ImageManager : MonoBehaviour
 
     public void ChangeTeam(int index)
     {
+        Debug.Log($"팀 변경이래요! index {index}");
         foreach(GameObject canvas in PromotionPanelList)
         {
             canvas.GetComponentInChildren<Image>().sprite = SpriteList[index];
