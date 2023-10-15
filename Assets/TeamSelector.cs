@@ -27,7 +27,6 @@ public class TeamSelector : MonoBehaviour
         panel.GetComponent<Outline>().enabled = true;
         int index = TeamPanelList.IndexOf(panel);
         NetworkManager.instance.SetTeamIndex(index);
-        Debug.Log(index);
     }
 }
 

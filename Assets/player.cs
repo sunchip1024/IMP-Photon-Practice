@@ -21,6 +21,7 @@ public class player : MonoBehaviour
     public GameObject followCam;
 
     //局聪皋捞记 贸府
+    [SerializeField]
     private Animator animator;
     public bool isMoving;
     public bool isRunning;
