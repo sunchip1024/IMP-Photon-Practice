@@ -36,7 +36,7 @@ public class player : MonoBehaviour
     public Rigidbody rigid;
 
     public GameObject cameras;
-    public GameObject NameCanvas;
+    public GameObject NameTag;
 
     private void Start()
     {
@@ -56,7 +56,7 @@ public class player : MonoBehaviour
             SetName(playername);
             cameras.SetActive(true);
             gameObject.tag = "LocalPlayer";
-            NameCanvas.SetActive(false);
+            NameTag.SetActive(false);
         }
         else
         {
