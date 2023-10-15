@@ -1117,7 +1117,7 @@ MonoBehaviour:
     Name: isRunning
   - Type: 4
     SynchronizeType: 0
-    Name: IsMoving
+    Name: isMoving
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
