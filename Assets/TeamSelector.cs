@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class TeamSelector : MonoBehaviour
 {
+    public static TeamSelector instance;
     public List<GameObject> TeamPanelList;
 
-    private void Start()
-    {
-        ClearPanels();
-        SelectPanel(TeamPanelList[0]);
-    }
+    //private void Start()
+    //{
+    //    SelectPanel(TeamPanelList[0]);
+    //}
 
     public void ClearPanels()
     {

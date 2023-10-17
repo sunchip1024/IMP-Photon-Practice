@@ -50,7 +50,7 @@ public class EmoticonManager : MonoBehaviour
 
         //int index = (int)(Emoticon)Enum.Parse(typeof(Emoticon), emoticon);
         //string to index
-        Invoke("DisableEmoticonImage", 5f);
+        Invoke("DisableEmoticonImage", 2f);
 
     }
 
