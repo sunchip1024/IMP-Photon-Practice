@@ -129,7 +129,7 @@ public class player : MonoBehaviour
     }
     private void SetName(string name)
     {
-        Debug.Log(name + "으로 세팅하겠습니다!");
+        Debug.Log("이름을 " + name + "(으)로 세팅하겠습니다!");
         PV.RPC(nameof(SetNameRPC), RpcTarget.AllBuffered, name);
     }
 

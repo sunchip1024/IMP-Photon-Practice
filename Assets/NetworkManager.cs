@@ -264,5 +264,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //Debug.Log($"Teamindex : {index}");
         TeamIndex = index;
     }
+
+    public void Hello()
+    {
+        Debug.Log("hello");
+    }
     
 }

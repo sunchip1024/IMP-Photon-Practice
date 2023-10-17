@@ -36,6 +36,7 @@ public class TeamManager : MonoBehaviour
 
     private void Start()
     {
+        instance = this;
         StartCoroutine(GetJsonData());
     }
 
@@ -107,7 +108,12 @@ public class TeamManager : MonoBehaviour
     {
         foreach (GameObject panel in TeamPanelList)
         {
-            panel.GetComponent<Outline>().enabled = false;
+            panel.GetComponent<TeamPanelManager>().ImageToggle(true);
         }
+    }
+
+    public void hello()
+    {
+        Debug.Log("hello");
     }
 }

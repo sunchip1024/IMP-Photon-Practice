@@ -46,6 +46,8 @@ public class ImageManager : MonoBehaviour
     public void ChangeTeam(int index)
     {
         Debug.Log($"∆¿ ∫Ø∞Ê¿Ã∑°ø‰! index {index}");
+        Debug.Log($"∆¿ ∫Ø∞Ê : {index}({index % 3})");
+        index %= 3;
         foreach(GameObject canvas in PromotionPanelList)
         {
             canvas.GetComponentInChildren<Image>().sprite = SpriteList[index];

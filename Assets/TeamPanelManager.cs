@@ -8,6 +8,7 @@ public class TeamPanelManager : MonoBehaviour
     public Text TeamName;
     public Text TeamIntroduction;
     public Text TeamDescription;
+    public Image NonSelected;
 
     public void SelectTeam()
     {
@@ -25,9 +26,12 @@ public class TeamPanelManager : MonoBehaviour
 
     public void SelectPanel(GameObject panel)
     {
-        panel.GetComponent<Outline>().enabled = true;
-        Debug.Log("select!");
-        //TeamManager.instance.ClearPanels();
-        //TeamManager.instance.SetTeam(panel);
+        TeamManager.instance.SetTeam(panel);
+        ImageToggle(false);
+    }
+
+    public void ImageToggle(bool toggle)
+    {
+        NonSelected.enabled = toggle;
     }
 }
