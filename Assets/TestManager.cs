@@ -5,9 +5,7 @@ using UnityEngine;
 public class TestManager : MonoBehaviour
 {
     public static TestManager instance;
-
-    public GameObject Player;
-    public PlayerController _player;
+    public player _player;
 
     private void Awake()
     {
@@ -19,6 +17,12 @@ public class TestManager : MonoBehaviour
     {
         //_player.
     }
+
+    public void EmitEmoticonChange(string emoticon)
+    {
+        _player.SetEmoticon(emoticon);
+    }
+
     // Start is called before the first frame update
     void Start()
     {

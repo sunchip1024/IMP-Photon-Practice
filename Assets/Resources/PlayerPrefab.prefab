@@ -1139,6 +1139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PV: {fileID: 775595963429731147}
+  EmoticonManager: {fileID: 6999113643419844937}
   walkSpeed: 10
   runSpeed: 20
   jumpPower: 8
@@ -1667,6 +1668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6059529495148324265}
   - component: {fileID: 9094662526436820709}
+  - component: {fileID: 6206986966896340981}
   m_Layer: 0
   m_Name: EmoticonManager
   m_TagString: Untagged
@@ -1701,13 +1703,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca026b78253b73045b89d650282618e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EmoticonPanel: {fileID: 0}
+  PV: {fileID: 6206986966896340981}
+  EmoticonPanel: {fileID: 1772655168289623736}
   EmoticonImage: {fileID: 480484890209653997}
   CurrentEmoticonIndex: 0
   EmoticonList:
   - {fileID: 21300000, guid: 684736c95ab2c3140bd9abd1206a1935, type: 3}
   - {fileID: 21300000, guid: 49680298827fd1349ba96dff2e28c579, type: 3}
   - {fileID: 21300000, guid: 13b91e26a36b6344b9dc37f6218548e3, type: 3}
+--- !u!114 &6206986966896340981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6999113643419844937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7139259050538923717
 GameObject:
   m_ObjectHideFlags: 0

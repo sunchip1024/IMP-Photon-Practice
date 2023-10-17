@@ -9,6 +9,8 @@ public class player : MonoBehaviour
 {
     public PhotonView PV;
 
+    public GameObject EmoticonManager;
+
 
     public float walkSpeed = 5.0f;
     public float runSpeed = 10.0f;
@@ -49,7 +51,12 @@ public class player : MonoBehaviour
             Debug.Log("There is no animator");
         }
 
-        if (PV.IsMine) isLocalPlayer = true;
+        if (PV.IsMine)
+        {
+            Debug.Log("로컬 플레이");
+            isLocalPlayer = true;
+            TestManager.instance._player = this;
+        }
         if (isLocalPlayer)
         {
             Debug.Log("로컬이군요!");
@@ -189,4 +196,18 @@ public class player : MonoBehaviour
     //    }
     //    return false;
     //}
+
+    [ContextMenu("이모티콘 변경")]
+    public void SetEmoticon(string emoticon)
+    {
+        PV.RPC(nameof(SetEmoticonRPC), RpcTarget.AllBuffered, emoticon);
+    }
+
+
+    [PunRPC]
+    public void SetEmoticonRPC(string emoticon)
+    {
+        //Debug.Log("hello");
+        EmoticonManager.GetComponent<EmoticonManager>().SetEmoticon(emoticon);
+    }
 }
