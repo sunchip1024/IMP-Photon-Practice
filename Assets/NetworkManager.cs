@@ -25,6 +25,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public string RoomToMove;
     public Text PhotonStatusText;
 
+    public string nickName;
+
     void Awake()
     {
         instance = this;
@@ -75,7 +77,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     //}
     public void Join()
     {
-        string roomName = "Team" + TeamIndex;
+        string roomName = $"{TeamIndex}";
         Debug.Log("로딩 이미지");
         UIManager.GetComponent<UIManager>().ToggleLoading(true);
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 7 }, null);
@@ -179,7 +181,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomText.text = PhotonNetwork.CurrentRoom.Name;
         UIManager.GetComponent<UIManager>().HideLobbyCanvas();
         UIManager.GetComponent<UIManager>().ShowForumCanvas();
-        GeneratePlayer(NickNameInput.text);
+        GeneratePlayer(nickName);
         //try
         //{
         //    SetTeamIndex(int.Parse(TeamInput.text));
@@ -211,7 +213,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //Photonview.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + text);
     }
 
-
+    public void SetNickName()
+    {
+        nickName = NickNameInput.text;
+    }
 
     [ContextMenu("정보")]
     void Info()
@@ -255,7 +260,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log($"index {index}로 팀변경");
         TeamIndex = index;
         UIManager.GetComponent<UIManager>().ToggleLoading(true);
-        LeaveRoom("Team" + index);
+        LeaveRoom(index.ToString());
         ImageManager.instance.ChangeTeam(index);
     }
 

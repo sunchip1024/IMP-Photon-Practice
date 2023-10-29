@@ -207,7 +207,12 @@ public class player : MonoBehaviour
     [PunRPC]
     public void SetEmoticonRPC(string emoticon)
     {
-        //Debug.Log("hello");
         EmoticonManager.GetComponent<EmoticonManager>().SetEmoticon(emoticon);
+    }
+
+    [ContextMenu("회전정지")]
+    public void StopMoving()
+    {
+        rigid.angularVelocity = new Vector3(0, 0, 0);
     }
 }

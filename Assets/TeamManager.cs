@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TeamManager : MonoBehaviour
 {
     // API 엔드포인트 URL
-    private string apiUrl = "https://app.vpspace.net/Team/all"; // 실제 API URL로 변경하세요.
+    private string apiUrl = "https://app.vpspace.net/Team/all";
 
 
     public GameObject TeamPanelPrefab;
@@ -76,7 +76,6 @@ public class TeamManager : MonoBehaviour
 
     }
 
-    // JSON 배열을 역직렬화하기 위한 도우미 클래스
     public static class JsonHelper
     {
         public static T[] FromJson<T>(string json)

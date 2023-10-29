@@ -28,10 +28,5 @@ public class TeamSelector : MonoBehaviour
         int index = TeamPanelList.IndexOf(panel);
         NetworkManager.instance.SetTeamIndex(index);
     }
-
-    public void hello()
-    {
-        Debug.Log("hellohello");
-    }
 }
 
