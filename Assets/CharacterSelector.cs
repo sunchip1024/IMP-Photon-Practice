@@ -28,6 +28,11 @@ public class CharacterSelector : MonoBehaviour
         }
     }
     // Start is called before the first frame update
+
+    //public void ToggleOutline(GameObject button, bool toggle)
+    //{
+    //    button.GetComponent <Outline>().enabled = toggle;
+    //}
     void Start()
     {
         

@@ -24,7 +24,7 @@ public class ModelManager : MonoBehaviour
         ClearPortals();
         LobbyFloor.SetActive(false);
         //nature.SetActive(true);
-        hongbo.SetActive(true);
+        //hongbo.SetActive(true);
         Debug.Log(NetworkManager.instance.TeamIndex + "번 이미지로 세팅");
         ImageManager.instance.ChangeTeam(NetworkManager.instance.TeamIndex);
     }

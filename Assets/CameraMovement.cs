@@ -69,6 +69,8 @@ public class CameraMovement : MonoBehaviour
 
         currentZoom = 4f;
 
+        
+
     }
 
     // Update is called once per frame

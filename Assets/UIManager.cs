@@ -28,13 +28,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject WebsitePanel;
 
-    [Tooltip("캐릭터 선택용 패널")]
-    [SerializeField]
-    private GameObject CharacterSelectPanel;
+    //[Tooltip("캐릭터 선택용 패널")]
+    //[SerializeField]
+    //private GameObject CharacterSelectPanel;
 
-    [Tooltip("팀 선택용 패널")]
-    [SerializeField]
-    private GameObject TeamSelectPanel;
+    //[Tooltip("팀 선택용 패널")]
+    //[SerializeField]
+    //private GameObject TeamSelectPanel;
 
     [Tooltip("로비 캔버스")]
     [SerializeField]
@@ -52,16 +52,29 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private InputField ImageIndex;
 
+
+    #endregion
+
+    #region Public Variables
+    public static UIManager Instance;
+
     [Tooltip("로딩 이미지")]
     public Image LoadingImage;
 
     [Tooltip("프레임 텍스트")]
     public Text FrameText;
 
-    #endregion
+    [Header("이번에 새로 추가한 임시 패널")]
+    public GameObject NicknamePanel;
 
-    #region Public Variables
+    [Tooltip("팀 선택용 패널")]
+    public GameObject TeamSelectPanel;
 
+    [Tooltip("캐릭터 선택용 패널")]
+    public GameObject AvatarSelectPanel;
+
+    [Tooltip("줌인용 패널")]
+    public GameObject ZoomInPanel;
 
     #endregion
 
@@ -91,9 +104,10 @@ public class UIManager : MonoBehaviour
     }
     public void ClearPanels()
     {
+        NicknamePanel.SetActive(false);
         SimplePanel.SetActive(false);
         WebsitePanel.SetActive(false);
-        CharacterSelectPanel.SetActive(false);
+        AvatarSelectPanel.SetActive(false);
         TeamSelectPanel.SetActive(false);
     }
     public void StartGame()
@@ -117,13 +131,36 @@ public class UIManager : MonoBehaviour
         return Time.frameCount;
     }
 
+    public void NextPanel(int index)
+    {
+        ClearPanels();
+        switch (index)
+        {
+            case 0:
+                TeamSelectPanel.SetActive(true);
+                break;
+            case 1:
+                AvatarSelectPanel.SetActive(true);
+                break;
+        }
+    }
+
+    public void ShowZoomInCanvas()
+    {
+        ZoomInPanel.SetActive(true);
+    }
+
+    public void HideZoomInCanvas()
+    {
+        ZoomInPanel.SetActive(false);
+    }
 
     #endregion
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        Instance= this;
     }
 
     // Update is called once per frame

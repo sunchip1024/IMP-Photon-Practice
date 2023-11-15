@@ -1155,6 +1155,8 @@ MonoBehaviour:
   rigid: {fileID: 0}
   cameras: {fileID: 3708375799611420642}
   NameTag: {fileID: 6896608449475312291}
+  playerCamera: {fileID: 1309245839}
+  povCamera: {fileID: 0}
 --- !u!95 &3250134624885201482
 Animator:
   serializedVersion: 4

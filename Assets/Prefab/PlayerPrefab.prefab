@@ -291,6 +291,7 @@ MonoBehaviour:
   isJumping: 0
   rigid: {fileID: 0}
   cameras: {fileID: 760524319903269700}
+  playerCamera: {fileID: 4177969307123625257}
 --- !u!1 &8333997620562895941
 GameObject:
   m_ObjectHideFlags: 0

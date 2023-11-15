@@ -30,6 +30,7 @@ public class SinglePlayer : MonoBehaviour
     public Rigidbody rigid;
 
     public GameObject cameras;
+    public Camera playerCamera;
 
     private void Start()
     {
@@ -46,6 +47,8 @@ public class SinglePlayer : MonoBehaviour
         cameras.SetActive(true);
         gameObject.tag = "LocalPlayer";
         rigid = GetComponent<Rigidbody>();
+
+        CanvasManager.instance.SetCamera(playerCamera);
     }
 
     void Update()

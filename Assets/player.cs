@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Scene_Teleportation_Kit.Scripts.player;
 
 public class player : MonoBehaviour
 {
@@ -40,6 +41,9 @@ public class player : MonoBehaviour
     public GameObject cameras;
     public GameObject NameTag;
 
+    public Camera playerCamera;
+    public Camera povCamera;
+
     private void Start()
     {
         try
@@ -64,6 +68,7 @@ public class player : MonoBehaviour
             cameras.SetActive(true);
             gameObject.tag = "LocalPlayer";
             NameTag.SetActive(false);
+            //CanvasManager.instance.SetCamera(playerCamera);
         }
         else
         {

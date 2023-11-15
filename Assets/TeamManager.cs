@@ -69,10 +69,15 @@ public class TeamManager : MonoBehaviour
 
     private void GenerateTeamPanel(Team team)
     {
-        GameObject _teampanel = Instantiate(TeamPanelPrefab);
+        //GameObject _teampanel = Instantiate(TeamPanelPrefab);
+        //_teampanel.GetComponent<TeamPanelManager>().SetTeamInfo(team.team_index, team.team_name, team.team_introduction, team.team_description);
+        ////_teampanel.transform.SetParent(TeamScrollView.transform);
+
+        GameObject _teampanel = Instantiate(TeamPanelPrefab, TeamScrollView.transform); // Content의 자식으로 패널 생성
         _teampanel.GetComponent<TeamPanelManager>().SetTeamInfo(team.team_index, team.team_name, team.team_introduction, team.team_description);
-        _teampanel.transform.SetParent(TeamScrollView.transform);
+
         TeamPanelList.Add(_teampanel);
+        
 
     }
 

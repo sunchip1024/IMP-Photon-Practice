@@ -18,6 +18,7 @@ public class ImageManager : MonoBehaviour
     public GameObject HongboPanel;
     public Text HongboText;
 
+
     public void ClearModels()
     {
         foreach(GameObject model in ModelList)
