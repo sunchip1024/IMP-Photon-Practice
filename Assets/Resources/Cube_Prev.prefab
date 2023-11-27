@@ -225,7 +225,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4a743264cc5585e41a9029013586014c, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -426,9 +426,6 @@ MonoBehaviour:
   localPlayerTarget: {fileID: 946961719038856406}
   damping: 5
   offset: {x: 0, y: 5, z: -10}
-  m_zoomSpeed: 4
-  m_zoomMax: 5
-  m_zoomMin: 16
 --- !u!1 &9070914657710422140
 GameObject:
   m_ObjectHideFlags: 0

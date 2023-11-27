@@ -55,28 +55,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 $"현재 방에 있는 인원 : {PhotonNetwork.CurrentRoom.PlayerCount}\n";
 
         }
-
-
-        //if (PhotonNetwork.InLobby && RoomToMove != string.Empty)
-        //{
-        //    JoinOrCreateRoom(RoomToMove);
-        //    RoomToMove = null;
-        //}
     }
 
     public override void OnConnectedToMaster()
     {
         Debug.Log("서버 접속 완료");
         UIManager.GetComponent<UIManager>().ShowSimplePanel();
-        //PhotonNetwork.JoinLobby();
+        PhotonNetwork.JoinLobby();
 
     }
 
-    //public void Join()
-    //{
-
-    //    PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions { MaxPlayers = 6 }, null);
-    //}
     public void Join()
     {
         string roomName = $"{TeamIndex}";
@@ -84,15 +72,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         UIManager.GetComponent<UIManager>().ToggleLoading(true);
         PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 7 }, null);
     }
-
-    //public void Join(int teamIndex)
-    //{
-    //    string roomName = "Team" + teamIndex;
-    //    PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions { MaxPlayers = 6 }, null);
-    //}
-
     
-
     public void GeneratePlayer(string name)
     {
         
@@ -101,15 +81,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 new Vector3(0, 5, 0), Quaternion.identity);
         newPlayer = LocalPlayer.GetComponent<player>();
 
-        //newPlayer = PhotonNetwork.Instantiate(PlayerPrefabName,
-        //        new Vector3(0, 5, 0), Quaternion.identity).GetComponent<player>();
-
         newPlayer.playername = name;
         ModelManager.instance.SetHongbo();
         UIManager.GetComponent<UIManager>().ToggleLoading(false);
-
-        //CameraMovement.instance.Set();
-        //CameraMovement.instance.objectTofollow = newPlayer.followCam.transform;
 
     }
 
@@ -130,13 +104,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Application.Quit();
 #endif
     }
-
-
-    public void JoinLobby()
-    {
-        Debug.Log("로비에 접속할게요!");
-        PhotonNetwork.JoinLobby();
-    }
+    
     public override void OnJoinedLobby()
     {
         Debug.Log("로비 접속 완료");
@@ -153,6 +121,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void JoinOrCreateRoom(string RoomName) => PhotonNetwork.JoinOrCreateRoom(RoomName, new RoomOptions { MaxPlayers = 5 }, null);
     public void JoinRandomRoom() => PhotonNetwork.JoinRandomRoom();
     public void LeaveRoom() => PhotonNetwork.LeaveRoom();
+
     public void LeaveRoom(string RoomName)
     {
         PhotonNetwork.LeaveRoom();
@@ -162,21 +131,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        base.OnLeftRoom();
-        try
-        {
-            RoomText.text = "Not in the room";
-        }
-        catch
-        {
-            return;
-        }
-        
+        RoomText.text = "Not in the room";
         Debug.Log(PhotonNetwork.NetworkClientState.ToString());
     }
 
-
-    public override void OnCreatedRoom() => print("방 만들기 완료");
     public override void OnJoinedRoom()
     {
         Debug.LogFormat("방 참가 완료 : {0}", PhotonNetwork.CurrentRoom);
@@ -207,17 +165,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         print("방 랜덤참가 실패");
-    }
-
-
-    public void SendChatting(string text)
-    {
-        //Photonview.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + text);
-    }
-
-    public void SetNickName()
-    {
-        nickName = NickNameInput.text;
     }
 
     [ContextMenu("정보")]
@@ -270,11 +217,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         //Debug.Log($"Teamindex : {index}");
         TeamIndex = index;
-    }
-
-    public void Hello()
-    {
-        Debug.Log("hello");
     }
     
 }
