@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
+using System.Runtime.CompilerServices;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -30,6 +31,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         instance = this;
+
         //Screen.SetResolution(1920, 1080, false);
         Screen.SetResolution(960, 540, false);
         PhotonNetwork.ConnectUsingSettings();
@@ -66,7 +68,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("서버 접속 완료");
         UIManager.GetComponent<UIManager>().ShowSimplePanel();
-        PhotonNetwork.JoinLobby();
+        //PhotonNetwork.JoinLobby();
 
     }
 
